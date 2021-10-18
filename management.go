@@ -3,7 +3,6 @@ package umbrella_management
 import (
 	"net/http"
 	"net/url"
-	"time"
 )
 
 type Management struct {
@@ -14,24 +13,37 @@ type Management struct {
 	Client         *http.Client
 }
 
-type Option func(c *http.Client)
-
 const DefaultManagementURL = "https://management.api.umbrella.com/v1"
 
-func NewManagement(APIKey string, APIPwd string, organizationID string, client ...Option) *Management {
-	u, _ := url.Parse(DefaultManagementURL)
-	return &Management {
-		APIKey: APIKey,
-		APIPwd: APIPwd,
-		OrganizationID: organizationID,
-		BaseURL: u,
-		Client: &http.Client{
-			Transport:     &http.Transport{
-				ResponseHeaderTimeout: 15 * time.Second
-			},
-			CheckRedirect: nil,
-			Jar:           nil,
-			Timeout:       0,
-		},
+type ClientOption func(m *Management)
+
+// WithClient is an optional functional parameter to be used with NewManagement.
+// WithClient takes a pointer to a custom client that the user has created.
+func WithClient(c *http.Client) ClientOption {
+	return func(m *Management) {
+		m.Client = c
 	}
+}
+
+// NewManagement creates a new client for use with the Umbrella Management API.
+// Mandatory parameters: an API key and password and an organization ID.
+// By default, http.DefaultClient is used.
+// However, you may pass in a custom HTTP client using functional parameters, i.e.:
+// NewManagement(key, pwd, id, WithClient(customClient))
+func NewManagement(key string, pwd string, id string, clientOpt ...ClientOption) *Management {
+	u, _ := url.Parse(DefaultManagementURL)
+	client := &Management{
+		APIKey:         key,
+		APIPwd:         pwd,
+		OrganizationID: id,
+		BaseURL:        u,
+		Client:         http.DefaultClient,
+	}
+
+	// only ever one option
+	if clientOpt != nil {
+		clientOpt[0](client)
+	}
+
+	return client
 }
