@@ -1,3 +1,3 @@
-module github.com/chancetudor/umbrella-management
+module github.com/chancetudor/umbrella
 
 go 1.16
