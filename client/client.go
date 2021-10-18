@@ -5,7 +5,6 @@ import (
 	"io/ioutil"
 	"net/http"
 	"net/url"
-	"path"
 )
 
 type UmbrellaClient struct {
@@ -13,10 +12,10 @@ type UmbrellaClient struct {
 	APIPwd         string
 	OrganizationID string
 	BaseURL        *url.URL
-	HttpClient     *http.Client
+	Client         *http.Client
 }
 
-const DefaultManagementURL = "https://management.api.umbrella.com/v1"
+const DefaultManagementURL = "https://client.api.umbrella.com/v1"
 
 type HttpClientOption func(m *UmbrellaClient)
 
@@ -24,7 +23,7 @@ type HttpClientOption func(m *UmbrellaClient)
 // WithClient takes a pointer to a custom client that the user has created.
 func WithClient(c *http.Client) HttpClientOption {
 	return func(m *UmbrellaClient) {
-		m.HttpClient = c
+		m.Client = c
 	}
 }
 
@@ -33,17 +32,15 @@ func WithClient(c *http.Client) HttpClientOption {
 // By default, http.DefaultClient is used.
 // However, you may pass in a custom HTTP client using functional parameters, e.g.:
 // NewUmbrellaClient(key, pwd, id, WithClient(customClient))
-func NewUmbrellaClient(key string, pwd string, id string, clientOpt ...HttpClientOption) (*UmbrellaClient, error) {
-	u, err := formURL(DefaultManagementURL, "organizations", id)
-	if err != nil {
-		return nil, err
-	}
+func NewUmbrellaClient(key string, pwd string, id string, clientOpt ...HttpClientOption) *UmbrellaClient {
+	u, _ := url.Parse(DefaultManagementURL)
+	u.Path += "organizations" + id
 	client := &UmbrellaClient{
 		APIKey:         key,
 		APIPwd:         pwd,
 		OrganizationID: id,
 		BaseURL:        u,
-		HttpClient:     http.DefaultClient,
+		Client:         http.DefaultClient,
 	}
 
 	// only ever one option
@@ -51,70 +48,58 @@ func NewUmbrellaClient(key string, pwd string, id string, clientOpt ...HttpClien
 		clientOpt[0](client)
 	}
 
-	return client, nil
+	return client
 }
 
-// get is a helper function to perform a GET request to a specified API path.
-// The function takes in a string and returns a slice of bytes
-// representing the response body and is the caller's duty to unmarshal the response.
-func (client *UmbrellaClient) get(url string) ([]byte, error) {
-	req, err := http.NewRequest(http.MethodGet, client.BaseURL.String(), nil)
+// get is a helper function to perform a get request to a specified API path.
+// The function takes in a specified path, e.g.: "destinationlists" and adds that to the UmbrellaClient client's BaseURL.
+// The function returns the status code and a slice of bytes representing the response body and
+// is the caller's duty to unmarshal the response.
+func (m *UmbrellaClient) get(path string) (int, []byte, error) {
+	m.BaseURL.Path += path
+	req, err := http.NewRequest(http.MethodGet, m.BaseURL.String(), nil)
 	if err != nil {
-		return nil, err
+		return -1, nil, err
 	}
-	req.SetBasicAuth(client.APIKey, client.APIPwd)
+	req.SetBasicAuth(m.APIKey, m.APIPwd)
 
-	response, err := client.HttpClient.Do(req)
+	response, err := m.Client.Do(req)
 	if err != nil {
-		return nil, err
+		return -1, nil, err
 	}
 	defer response.Body.Close()
 
 	body, err := ioutil.ReadAll(response.Body)
 	if err != nil {
-		return nil, err
+		return -1, nil, err
 	}
 
-	return body, nil
+	return response.StatusCode, body, nil
 }
 
 // post is a helper function to perform a post request to a specified API path.
-// The function takes in a string and returns a slice of bytes (as the PUT request body).
+// The function takes in a specified path, e.g.: "destinationlists," and a slice of type byte (as the POST request body).
 // It is the caller's duty to marshal their struct before passing that encoding to post.
-// The function returns a slice of bytes representing the response body and
+// The function returns the status code and a slice of bytes representing the response body and
 // is the caller's duty to unmarshal the response.
-func (client *UmbrellaClient) post(url string, body []byte) ([]byte, error) {
-	req, err := http.NewRequest(http.MethodPost, url, bytes.NewBuffer(body))
+func (m *UmbrellaClient) post(path string, body []byte) (int, []byte, error) {
+	m.BaseURL.Path += path
+	req, err := http.NewRequest(http.MethodPost, m.BaseURL.String(), bytes.NewBuffer(body))
 	if err != nil {
-		return nil, err
+		return -1, nil, err
 	}
-	req.SetBasicAuth(client.APIKey, client.APIPwd)
+	req.SetBasicAuth(m.APIKey, m.APIPwd)
 
-	response, err := client.HttpClient.Do(req)
+	response, err := m.Client.Do(req)
 	if err != nil {
-		return nil, err
+		return -1, nil, err
 	}
 	defer response.Body.Close()
 
 	respBody, err := ioutil.ReadAll(response.Body)
 	if err != nil {
-		return nil, err
+		return -1, nil, err
 	}
 
-	return respBody, nil
-}
-
-// formURL is a helper function to properly form a URL.
-// The function takes a string and optional parameters that build out a properly formatted URL.
-// The function returns a URl and an error, if there was one.
-func formURL(baseURL string, paths ...string) (*url.URL, error) {
-	u, err := url.Parse(baseURL)
-	if err != nil {
-		return nil, err
-	}
-	for _, p := range paths {
-		u.Path = path.Join(u.Path, p)
-	}
-
-	return u, nil
+	return response.StatusCode, respBody, nil
 }
