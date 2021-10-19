@@ -1,4 +1,4 @@
-package destinations
+package destination
 
 import (
 	"encoding/json"
@@ -12,8 +12,10 @@ type Destination struct {
 	CreatedAt   string `json:"createdAt"`
 }
 
-// unmarshal is a helper method to unmarshal an http.Response body into a Destination struct.
-// The function takes a slice of bytes, the response body, and returns an error, if there was one.
+// unmarshal is a helper method to unmarshal an http.Response body
+// into a Destination struct.
+// The function takes a slice of bytes, the response body,
+// and returns an error, if there was one.
 func (d *Destination) unmarshal(response []byte) error {
 	if err := json.Unmarshal(response, d); err != nil {
 		return err
