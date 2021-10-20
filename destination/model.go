@@ -40,8 +40,7 @@ func NewPostDestination(destination string, comment string) *PostDestination {
 }
 
 // Unmarshal is a helper method to unmarshal an http.Response body into a Destination struct.
-// The function takes a slice of bytes, the response body,
-// and returns an error, if there was one.
+// The function takes a pointer to an http.Response and returns an error, if there was one.
 func (d *Destination) Unmarshal(response *http.Response) error {
 	body, err := ioutil.ReadAll(response.Body)
 	if err != nil {
