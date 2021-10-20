@@ -1,5 +1,11 @@
 package destinationLists
 
+import (
+	"encoding/json"
+	"io/ioutil"
+	"net/http"
+)
+
 type DestinationList struct {
 	ID                   int    `json:"id,omitempty"`
 	OrganizationID       int    `json:"organizationId,omitempty"`
@@ -54,4 +60,19 @@ type DestinationListCreate struct {
 		Type        string `json:"type,omitempty"`
 		Comment     string `json:"comment,omitempty"`
 	} `json:"destinations,omitempty"`
+}
+
+// unmarshal is a helper method to unmarshal an http.Response body into a Destination struct.
+// The function takes a slice of bytes, the response body,
+// and returns an error, if there was one.
+func (d *DestinationListCollection) Unmarshal(response *http.Response) error {
+	body, err := ioutil.ReadAll(response.Body)
+	if err != nil {
+		return err
+	}
+	if err := json.Unmarshal(body, d); err != nil {
+		return err
+	}
+
+	return nil
 }
