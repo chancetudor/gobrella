@@ -66,14 +66,8 @@ func (client *UmbrellaClient) get(url string) (*http.Response, error) {
 	if err != nil {
 		return nil, err
 	}
+
 	return response, nil
-	// defer response.Body.Close()
-	//
-	// body, err := ioutil.ReadAll(response.Body)
-	// if err != nil {
-	// 	return nil, err
-	// }
-	// return body, nil
 }
 
 // post is a helper function to perform a post request to a specified API path.
@@ -90,11 +84,22 @@ func (client *UmbrellaClient) post(url string, body []byte) (*http.Response, err
 	if err != nil {
 		return nil, err
 	}
-	// defer response.Body.Close()
-	// respBody, err := ioutil.ReadAll(response.Body)
-	// if err != nil {
-	// 	return nil, err
-	// }
+
+	return response, nil
+}
+
+func (client *UmbrellaClient) delete(url string, body []byte) (*http.Response, error) {
+	req, err := http.NewRequest(http.MethodDelete, url, bytes.NewBuffer(body))
+	if err != nil {
+		return nil, err
+	}
+	req.SetBasicAuth(client.APIKey, client.APIPwd)
+	req.Header.Set("Content-Type", "application/json")
+
+	response, err := client.HttpClient.Do(req)
+	if err != nil {
+		return nil, err
+	}
 
 	return response, nil
 }
