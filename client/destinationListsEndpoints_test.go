@@ -9,7 +9,7 @@ import (
 )
 
 func TestUmbrellaClient_GetDestinationLists(t *testing.T) {
-	err := godotenv.Load("/home/chance/dev/umbrella/dev.env")
+	err := godotenv.Load("/home/chance/dev/gobrella/dev.env")
 	if err != nil {
 		t.Error(err)
 	}
@@ -23,7 +23,7 @@ func TestUmbrellaClient_GetDestinationLists(t *testing.T) {
 }
 
 func TestUmbrellaClient_GetDestinationList(t *testing.T) {
-	err := godotenv.Load("/home/chance/dev/umbrella/dev.env")
+	err := godotenv.Load("/home/chance/dev/gobrella/dev.env")
 	if err != nil {
 		t.Error(err)
 	}
@@ -43,7 +43,7 @@ func TestUmbrellaClient_GetDestinationList(t *testing.T) {
 }
 
 func TestUmbrellaClient_PostDestinationList(t *testing.T) {
-	err := godotenv.Load("/home/chance/dev/umbrella/dev.env")
+	err := godotenv.Load("/home/chance/dev/gobrella/dev.env")
 	if err != nil {
 		t.Error(err)
 	}
@@ -51,7 +51,7 @@ func TestUmbrellaClient_PostDestinationList(t *testing.T) {
 	newList := &destList.DestinationListCreate{
 		Access:       "allow",
 		IsGlobal:     false,
-		Name:         "SOAR DEV TEST LIST 2",
+		Name:         "SOAR DEV TEST LIST 4",
 		Destinations: nil,
 	}
 	r, err := testClient.PostDestinationList(newList)
@@ -60,8 +60,33 @@ func TestUmbrellaClient_PostDestinationList(t *testing.T) {
 		t.Fail()
 	}
 
-	if r.StatusCode != 200 {
-		t.Error()
+	fmt.Println(r)
+}
+
+func TestUmbrellaClient_PatchDestinationList(t *testing.T) {
+	err := godotenv.Load("/home/chance/dev/gobrella/dev.env")
+	if err != nil {
+		t.Error(err)
+	}
+	testClient, _ := NewUmbrellaClient(os.Getenv("KEY"), os.Getenv("P"), os.Getenv("ID"))
+	r, err := testClient.PatchDestinationList("14346495", "SOAR DEV TEST LIST 4.1")
+	if err != nil {
+		t.Error(err)
+		t.Fail()
+	}
+
+	fmt.Println(r)
+}
+
+func TestUmbrellaClient_DeleteDestinationList(t *testing.T) {
+	err := godotenv.Load("/home/chance/dev/gobrella/dev.env")
+	if err != nil {
+		t.Error(err)
+	}
+	testClient, _ := NewUmbrellaClient(os.Getenv("KEY"), os.Getenv("P"), os.Getenv("ID"))
+	r, err := testClient.DeleteDestinationList("14346460")
+	if err != nil {
+		t.Error(err)
 		t.Fail()
 	}
 

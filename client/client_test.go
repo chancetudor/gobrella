@@ -8,7 +8,7 @@ import (
 )
 
 func TestNewManagementURL(t *testing.T) {
-	err := godotenv.Load("/home/chance/dev/umbrella/dev.env")
+	err := godotenv.Load("/home/chance/dev/gobrella/dev.env")
 	if err != nil {
 		t.Error(err)
 	}
@@ -21,7 +21,7 @@ func TestNewManagementURL(t *testing.T) {
 }
 
 func TestGet(t *testing.T) {
-	err := godotenv.Load("/home/chance/dev/umbrella/dev.env")
+	err := godotenv.Load("/home/chance/dev/gobrella/dev.env")
 	if err != nil {
 		t.Error(err)
 	}
