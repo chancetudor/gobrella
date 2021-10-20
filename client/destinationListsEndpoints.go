@@ -7,6 +7,8 @@ import (
 	"net/http"
 )
 
+// destinationListsEndpoints contains all functions to deal with destination lists (aka, block lists).
+
 // GetDestinationLists retrieves all destination lists of an organization.
 // The function takes no parameters and returns a pointer to a DestinationListCollection
 // and an error, if there was one.
@@ -70,9 +72,52 @@ func (client *UmbrellaClient) PostDestinationList(list *destList.DestinationList
 	if err != nil {
 		return nil, err
 	}
-
 	if resp.StatusCode != 200 {
 		err := errs.NewDestinationListsError(resp.Status, resp.Body, "PostDestinationList")
+		return nil, err
+	}
+
+	return resp, nil
+}
+
+// PatchDestinationList renames a destination list.
+// The function takes in two strings and returns
+// a pointer to an http.Response and an error, if there was one.
+func (client *UmbrellaClient) PatchDestinationList(listID string, name string) (*http.Response, error) {
+	url, err := formURL(client.BaseURL.String(), "destinationlists", listID)
+	if err != nil {
+		return nil, err
+	}
+	patch := &destList.DestinationListPatch{Name: name}
+	body, err := json.Marshal(patch)
+	if err != nil {
+		return nil, err
+	}
+	resp, err := client.patch(url.String(), body)
+	if err != nil {
+		return nil, err
+	}
+	if resp.StatusCode != 200 {
+		err := errs.NewDestinationListsError(resp.Status, resp.Body, "PatchDestinationList")
+		return nil, err
+	}
+
+	return resp, nil
+}
+
+// DeleteDestinationList deletes a destination list.
+// The function takes in a string and returns a pointer to an http.Response and an error, if there was one.
+func (client *UmbrellaClient) DeleteDestinationList(listID string) (*http.Response, error) {
+	url, err := formURL(client.BaseURL.String(), "destinationlists", listID)
+	if err != nil {
+		return nil, err
+	}
+	resp, err := client.delete(url.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+	if resp.StatusCode != 200 {
+		err := errs.NewDestinationListsError(resp.Status, resp.Body, "DeleteDestinationList")
 		return nil, err
 	}
 

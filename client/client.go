@@ -88,6 +88,22 @@ func (client *UmbrellaClient) post(url string, body []byte) (*http.Response, err
 	return response, nil
 }
 
+func (client *UmbrellaClient) patch(url string, body []byte) (*http.Response, error) {
+	req, err := http.NewRequest(http.MethodPatch, url, bytes.NewBuffer(body))
+	if err != nil {
+		return nil, err
+	}
+	req.SetBasicAuth(client.APIKey, client.APIPwd)
+	req.Header.Set("Content-Type", "application/json")
+
+	response, err := client.HttpClient.Do(req)
+	if err != nil {
+		return nil, err
+	}
+
+	return response, nil
+}
+
 func (client *UmbrellaClient) delete(url string, body []byte) (*http.Response, error) {
 	req, err := http.NewRequest(http.MethodDelete, url, bytes.NewBuffer(body))
 	if err != nil {

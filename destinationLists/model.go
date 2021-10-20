@@ -6,11 +6,13 @@ import (
 	"net/http"
 )
 
+// DestinationList is a struct to represent a single destination list.
+// GetDestinationList returns this type.
 type DestinationList struct {
 	Status struct {
 		Code int    `json:"code"`
 		Text string `json:"text"`
-	} `json:"status"`
+	} `json:"status,omitempty"`
 	Data struct {
 		ID                   int         `json:"id"`
 		OrganizationID       int         `json:"organizationId"`
@@ -25,10 +27,13 @@ type DestinationList struct {
 		BundleTypeID         int         `json:"bundleTypeId"`
 		Meta                 struct {
 			DestinationCount int `json:"destinationCount"`
-		} `json:"meta"`
+		} `json:"meta,omitempty"`
 	} `json:"data"`
 }
 
+// DestinationListCollection is a struct used to marshal all destination lists in an organization.
+// GetDestinationLists() returns this type.
+// The Data field contains each destination list in the organization.
 type DestinationListCollection struct {
 	Status struct {
 		Code int    `json:"code"`
@@ -61,15 +66,23 @@ type DestinationListCollection struct {
 	} `json:"data"`
 }
 
+// DestinationListCreate is a struct used for creating new destination lists within an organization.
+// PostDestinationList() expects this type to be passed to it.
 type DestinationListCreate struct {
-	Access       string `json:"access,omitempty"`
-	IsGlobal     bool   `json:"isGlobal,omitempty"`
-	Name         string `json:"name,omitempty"`
+	Access       string `json:"access"`
+	IsGlobal     bool   `json:"isGlobal"`
+	Name         string `json:"name"`
 	Destinations []struct {
 		Destination string `json:"destination,omitempty"`
 		Type        string `json:"type,omitempty"`
 		Comment     string `json:"comment,omitempty"`
 	} `json:"destinations,omitempty"`
+}
+
+// DestinationListPatch is a struct used to rename a previously existing destination list.
+// PatchDestinationList() uses this type.
+type DestinationListPatch struct {
+	Name string `json:"name"`
 }
 
 func NewDestinationListCreate(access string, isGlobal bool, name string, destinations []struct {
@@ -94,7 +107,7 @@ func (d *DestinationListCollection) Unmarshal(response *http.Response) error {
 	return nil
 }
 
-// Unmarshal is a helper method to unmarshal an http.Response body into a DestinationListCollection struct.
+// Unmarshal is a helper method to unmarshal an http.Response body into a DestinationList struct.
 // The function takes a pointer to an http.Response and returns an error, if there was one.
 func (d *DestinationList) Unmarshal(response *http.Response) error {
 	body, err := ioutil.ReadAll(response.Body)

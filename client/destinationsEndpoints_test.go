@@ -10,7 +10,10 @@ import (
 )
 
 func TestUmbrellaClient_GetDestinations(t *testing.T) {
-	_ = godotenv.Load("/home/chance/dev/umbrella/dev.env")
+	err := godotenv.Load("/home/chance/dev/gobrella/dev.env")
+	if err != nil {
+		t.Error(err)
+	}
 	testClient, _ := NewUmbrellaClient(os.Getenv("KEY"), os.Getenv("P"), os.Getenv("ID"))
 	r, err := testClient.GetDestinations("4092066")
 	if err != nil {
@@ -27,7 +30,10 @@ func TestUmbrellaClient_GetDestinations(t *testing.T) {
 }
 
 func TestUmbrellaClient_PostDestinations(t *testing.T) {
-	_ = godotenv.Load("/home/chance/dev/umbrella/dev.env")
+	err := godotenv.Load("/home/chance/dev/gobrella/dev.env")
+	if err != nil {
+		t.Error(err)
+	}
 	testClient, _ := NewUmbrellaClient(os.Getenv("KEY"), os.Getenv("P"), os.Getenv("ID"))
 	dests := []*destination.PostDestination{
 		destination.NewPostDestination("test"+strconv.Itoa(0)+".com",
@@ -48,7 +54,10 @@ func TestUmbrellaClient_PostDestinations(t *testing.T) {
 }
 
 func TestUmbrellaClient_DeleteDestinations(t *testing.T) {
-	_ = godotenv.Load("/home/chance/dev/umbrella/dev.env")
+	err := godotenv.Load("/home/chance/dev/gobrella/dev.env")
+	if err != nil {
+		t.Error(err)
+	}
 	testClient, _ := NewUmbrellaClient(os.Getenv("KEY"), os.Getenv("P"), os.Getenv("ID"))
 	destIDs := []int{4059230}
 	r, err := testClient.DeleteDestinations("4092066", destIDs)

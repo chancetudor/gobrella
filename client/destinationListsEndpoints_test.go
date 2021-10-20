@@ -9,7 +9,7 @@ import (
 )
 
 func TestUmbrellaClient_GetDestinationLists(t *testing.T) {
-	err := godotenv.Load("/home/chance/dev/umbrella/dev.env")
+	err := godotenv.Load("/home/chance/dev/gobrella/dev.env")
 	if err != nil {
 		t.Error(err)
 	}
@@ -23,7 +23,7 @@ func TestUmbrellaClient_GetDestinationLists(t *testing.T) {
 }
 
 func TestUmbrellaClient_GetDestinationList(t *testing.T) {
-	err := godotenv.Load("/home/chance/dev/umbrella/dev.env")
+	err := godotenv.Load("/home/chance/dev/gobrella/dev.env")
 	if err != nil {
 		t.Error(err)
 	}
@@ -43,7 +43,7 @@ func TestUmbrellaClient_GetDestinationList(t *testing.T) {
 }
 
 func TestUmbrellaClient_PostDestinationList(t *testing.T) {
-	err := godotenv.Load("/home/chance/dev/umbrella/dev.env")
+	err := godotenv.Load("/home/chance/dev/gobrella/dev.env")
 	if err != nil {
 		t.Error(err)
 	}
@@ -55,6 +55,26 @@ func TestUmbrellaClient_PostDestinationList(t *testing.T) {
 		Destinations: nil,
 	}
 	r, err := testClient.PostDestinationList(newList)
+	if err != nil {
+		t.Error(err)
+		t.Fail()
+	}
+
+	if r.StatusCode != 200 {
+		t.Error()
+		t.Fail()
+	}
+
+	fmt.Println(r)
+}
+
+func TestUmbrellaClient_DeleteDestinationList(t *testing.T) {
+	err := godotenv.Load("/home/chance/dev/gobrella/dev.env")
+	if err != nil {
+		t.Error(err)
+	}
+	testClient, _ := NewUmbrellaClient(os.Getenv("KEY"), os.Getenv("P"), os.Getenv("ID"))
+	r, err := testClient.DeleteDestinationList("14344747")
 	if err != nil {
 		t.Error(err)
 		t.Fail()
