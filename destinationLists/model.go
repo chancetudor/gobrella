@@ -79,9 +79,9 @@ type DestinationListCreate struct {
 	} `json:"destinations,omitempty"`
 }
 
-// DestinationListPostedPatched is a struct that represents the return value of a successful POST or PATCH request.
+// DestinationListPosted is a struct that represents the return value of a successful POST or PATCH request.
 // PostDestinationList and PatchDestinationList returns this type.
-type DestinationListPostedPatched struct {
+type DestinationListPosted struct {
 	ID                   int    `json:"id"`
 	OrganizationID       int    `json:"organizationId"`
 	Access               string `json:"access"`
@@ -139,9 +139,9 @@ func (d *DestinationList) Unmarshal(response *http.Response) error {
 	return nil
 }
 
-// Unmarshal is a helper method to unmarshal an http.Response body into a DestinationListPostedPatched struct.
+// Unmarshal is a helper method to unmarshal an http.Response body into a DestinationListPosted struct.
 // The function takes a pointer to an http.Response and returns an error, if there was one.
-func (d *DestinationListPostedPatched) Unmarshal(response *http.Response) error {
+func (d *DestinationListPosted) Unmarshal(response *http.Response) error {
 	body, err := ioutil.ReadAll(response.Body)
 	if err != nil {
 		return err

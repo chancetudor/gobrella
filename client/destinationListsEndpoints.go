@@ -57,8 +57,8 @@ func (client *UmbrellaClient) GetDestinationList(listID string) (*destList.Desti
 
 // PostDestinationList creates a destination list.
 // The function takes in a pointer to a DestinationListCreate
-// and returns a pointer to a DestinationListPostedPatched and an error, if there was one.
-func (client *UmbrellaClient) PostDestinationList(list *destList.DestinationListCreate) (*destList.DestinationListPostedPatched, error) {
+// and returns a pointer to a DestinationListPosted and an error, if there was one.
+func (client *UmbrellaClient) PostDestinationList(list *destList.DestinationListCreate) (*destList.DestinationListPosted, error) {
 	url, err := formURL(client.BaseURL.String(), "destinationlists")
 	if err != nil {
 		return nil, err
@@ -76,7 +76,7 @@ func (client *UmbrellaClient) PostDestinationList(list *destList.DestinationList
 		return nil, err
 	}
 
-	newList := new(destList.DestinationListPostedPatched)
+	newList := new(destList.DestinationListPosted)
 	if err = newList.Unmarshal(resp); err != nil {
 		return nil, err
 	}
@@ -86,32 +86,27 @@ func (client *UmbrellaClient) PostDestinationList(list *destList.DestinationList
 
 // PatchDestinationList renames a destination list.
 // The function takes in two strings
-// and returns a pointer to a DestinationListPostedPatched and an error, if there was one.
-func (client *UmbrellaClient) PatchDestinationList(listID string, newName string) (*destList.DestinationListPostedPatched, error) {
+// and returns an HTTP response status and an error, if there was one.
+func (client *UmbrellaClient) PatchDestinationList(listID string, newName string) (string, error) {
 	url, err := formURL(client.BaseURL.String(), "destinationlists", listID)
 	if err != nil {
-		return nil, err
+		return "", err
 	}
 	patch := &destList.DestinationListPatch{Name: newName}
 	body, err := json.Marshal(patch)
 	if err != nil {
-		return nil, err
+		return "", err
 	}
 	resp, err := client.patch(url.String(), body)
 	if err != nil {
-		return nil, err
+		return "", err
 	}
 	if resp.StatusCode != 200 {
-		err := errs.NewDestinationListsError(resp.Status, resp.Body, "PatchDestinationList")
-		return nil, err
+		err := errs.NewDestinationListsError(resp.Status, resp.Body, "DeleteDestinationList")
+		return resp.Status, err
 	}
 
-	newList := new(destList.DestinationListPostedPatched)
-	if err = newList.Unmarshal(resp); err != nil {
-		return nil, err
-	}
-
-	return newList, nil
+	return resp.Status, nil
 }
 
 // DeleteDestinationList deletes a destination list.
