@@ -24,7 +24,7 @@ type DestinationList struct {
 		ModifiedAt           string      `json:"modifiedAt"`
 		IsMspDefault         bool        `json:"isMspDefault"`
 		MarkedForDeletion    bool        `json:"markedForDeletion"`
-		BundleTypeID         int         `json:"bundleTypeId"`
+		BundleTypeID         int         `json:"bundleTypeId,omitempty"`
 		Meta                 struct {
 			DestinationCount int `json:"destinationCount"`
 		} `json:"meta,omitempty"`
@@ -79,6 +79,24 @@ type DestinationListCreate struct {
 	} `json:"destinations,omitempty"`
 }
 
+// DestinationListPostedPatched is a struct that represents the return value of a successful POST or PATCH request.
+// PostDestinationList and PatchDestinationList returns this type.
+type DestinationListPostedPatched struct {
+	ID                   int    `json:"id"`
+	OrganizationID       int    `json:"organizationId"`
+	Access               string `json:"access"`
+	IsGlobal             bool   `json:"isGlobal"`
+	Name                 string `json:"name"`
+	ThirdpartyCategoryID int    `json:"thirdpartyCategoryId"`
+	CreatedAt            string `json:"createdAt"`
+	ModifiedAt           string `json:"modifiedAt"`
+	IsMspDefault         bool   `json:"isMspDefault"`
+	MarkedForDeletion    bool   `json:"markedForDeletion"`
+	Meta                 struct {
+		DestinationCount int `json:"destinationCount"`
+	} `json:"meta"`
+}
+
 // DestinationListPatch is a struct used to rename a previously existing destination list.
 // PatchDestinationList() uses this type.
 type DestinationListPatch struct {
@@ -110,6 +128,20 @@ func (d *DestinationListCollection) Unmarshal(response *http.Response) error {
 // Unmarshal is a helper method to unmarshal an http.Response body into a DestinationList struct.
 // The function takes a pointer to an http.Response and returns an error, if there was one.
 func (d *DestinationList) Unmarshal(response *http.Response) error {
+	body, err := ioutil.ReadAll(response.Body)
+	if err != nil {
+		return err
+	}
+	if err := json.Unmarshal(body, d); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+// Unmarshal is a helper method to unmarshal an http.Response body into a DestinationListPostedPatched struct.
+// The function takes a pointer to an http.Response and returns an error, if there was one.
+func (d *DestinationListPostedPatched) Unmarshal(response *http.Response) error {
 	body, err := ioutil.ReadAll(response.Body)
 	if err != nil {
 		return err
