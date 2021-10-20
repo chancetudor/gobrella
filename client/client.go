@@ -2,7 +2,6 @@ package client
 
 import (
 	"bytes"
-	"io/ioutil"
 	"net/http"
 	"net/url"
 	"path"
@@ -55,9 +54,8 @@ func NewUmbrellaClient(key string, pwd string, id string, clientOpt ...HttpClien
 }
 
 // get is a helper function to perform a GET request to a specified API path.
-// The function takes in a string and returns a slice of bytes
-// representing the response body and is the caller's duty to unmarshal the response.
-func (client *UmbrellaClient) get(url string) ([]byte, error) {
+// The function takes in a string and returns a pointer to an http.Response.
+func (client *UmbrellaClient) get(url string) (*http.Response, error) {
 	req, err := http.NewRequest(http.MethodGet, url, nil)
 	if err != nil {
 		return nil, err
@@ -68,40 +66,37 @@ func (client *UmbrellaClient) get(url string) ([]byte, error) {
 	if err != nil {
 		return nil, err
 	}
-	defer response.Body.Close()
-
-	body, err := ioutil.ReadAll(response.Body)
-	if err != nil {
-		return nil, err
-	}
-
-	return body, nil
+	return response, nil
+	// defer response.Body.Close()
+	//
+	// body, err := ioutil.ReadAll(response.Body)
+	// if err != nil {
+	// 	return nil, err
+	// }
+	// return body, nil
 }
 
 // post is a helper function to perform a post request to a specified API path.
-// The function takes in a string and returns a slice of bytes (as the PUT request body).
-// It is the caller's duty to marshal their struct before passing that encoding to post.
-// The function returns a slice of bytes representing the response body and
-// is the caller's duty to unmarshal the response.
-func (client *UmbrellaClient) post(url string, body []byte) ([]byte, error) {
+// The function takes in a string and returns a pointer to an http.Response.
+func (client *UmbrellaClient) post(url string, body []byte) (*http.Response, error) {
 	req, err := http.NewRequest(http.MethodPost, url, bytes.NewBuffer(body))
 	if err != nil {
 		return nil, err
 	}
 	req.SetBasicAuth(client.APIKey, client.APIPwd)
+	req.Header.Set("Content-Type", "application/json")
 
 	response, err := client.HttpClient.Do(req)
 	if err != nil {
 		return nil, err
 	}
-	defer response.Body.Close()
+	// defer response.Body.Close()
+	// respBody, err := ioutil.ReadAll(response.Body)
+	// if err != nil {
+	// 	return nil, err
+	// }
 
-	respBody, err := ioutil.ReadAll(response.Body)
-	if err != nil {
-		return nil, err
-	}
-
-	return respBody, nil
+	return response, nil
 }
 
 // formURL is a helper function to properly form a URL.

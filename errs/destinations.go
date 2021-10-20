@@ -7,21 +7,19 @@ import (
 )
 
 type DestinationsError struct {
-	Status   string
-	Body     io.ReadCloser
-	Function string
+	Status string
+	Body   io.ReadCloser
 }
 
-func NewDestinationsError(s string, b io.ReadCloser, f string) *DestinationsError {
+func NewDestinationsError(s string, b io.ReadCloser) *DestinationsError {
 	return &DestinationsError{
-		Status:   s,
-		Body:     b,
-		Function: f,
+		Status: s,
+		Body:   b,
 	}
 }
 
 func (e *DestinationsError) Error() string {
 	resp, _ := ioutil.ReadAll(e.Body)
-	return fmt.Sprintf("Error in " + e.Function + ". Status: " + e.Status +
+	return fmt.Sprintf("Error in GetDestinations. Status: " + e.Status +
 		". Response body: " + string(resp))
 }
