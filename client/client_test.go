@@ -8,8 +8,11 @@ import (
 )
 
 func TestNewManagementURL(t *testing.T) {
-	_ = godotenv.Load("/home/chance/dev/umbrella/dev.env")
-	testClient, _ := NewUmbrellaClient(os.Getenv("KEY"), os.Getenv("PWD"), os.Getenv("ID"))
+	err := godotenv.Load("/home/chance/dev/umbrella/dev.env")
+	if err != nil {
+		t.Error(err)
+	}
+	testClient, _ := NewUmbrellaClient(os.Getenv("KEY"), os.Getenv("P"), os.Getenv("ID"))
 	expectedURL := "https://client.api.umbrella.com/v1/organizations/" + os.Getenv("ID")
 
 	if !strings.EqualFold(testClient.BaseURL.String(), expectedURL) {
@@ -18,8 +21,11 @@ func TestNewManagementURL(t *testing.T) {
 }
 
 func TestGet(t *testing.T) {
-	_ = godotenv.Load("/home/chance/dev/umbrella/dev.env")
-	testClient, _ := NewUmbrellaClient(os.Getenv("KEY"), os.Getenv("PWD"), os.Getenv("ID"))
+	err := godotenv.Load("/home/chance/dev/umbrella/dev.env")
+	if err != nil {
+		t.Error(err)
+	}
+	testClient, _ := NewUmbrellaClient(os.Getenv("KEY"), os.Getenv("P"), os.Getenv("ID"))
 	response, err := testClient.get("destinationlists")
 	if err != nil {
 		t.Error(err)
