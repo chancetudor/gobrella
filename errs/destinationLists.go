@@ -6,13 +6,13 @@ import (
 	"io/ioutil"
 )
 
-type DestinationsError struct {
+type DestinationListsError struct {
 	Status   string
 	Body     io.ReadCloser
 	Function string
 }
 
-func NewDestinationsError(s string, b io.ReadCloser, f string) *DestinationsError {
+func NewDestinationListsError(s string, b io.ReadCloser, f string) *DestinationsError {
 	return &DestinationsError{
 		Status:   s,
 		Body:     b,
@@ -20,7 +20,7 @@ func NewDestinationsError(s string, b io.ReadCloser, f string) *DestinationsErro
 	}
 }
 
-func (e *DestinationsError) Error() string {
+func (e *DestinationListsError) Error() string {
 	resp, _ := ioutil.ReadAll(e.Body)
 	return fmt.Sprintf("Error in " + e.Function + ". Status: " + e.Status +
 		". Response body: " + string(resp))
