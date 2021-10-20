@@ -58,7 +58,7 @@ func NewUmbrellaClient(key string, pwd string, id string, clientOpt ...HttpClien
 // The function takes in a string and returns a slice of bytes
 // representing the response body and is the caller's duty to unmarshal the response.
 func (client *UmbrellaClient) get(url string) ([]byte, error) {
-	req, err := http.NewRequest(http.MethodGet, client.BaseURL.String(), nil)
+	req, err := http.NewRequest(http.MethodGet, url, nil)
 	if err != nil {
 		return nil, err
 	}
