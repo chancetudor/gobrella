@@ -1,13 +1,14 @@
 package client
 
 import (
-	"fmt"
+	"github.com/joho/godotenv"
 	"os"
 	"strings"
 	"testing"
 )
 
 func TestNewManagementURL(t *testing.T) {
+	_ = godotenv.Load("/home/chance/dev/umbrella/dev.env")
 	testClient, _ := NewUmbrellaClient(os.Getenv("KEY"), os.Getenv("PWD"), os.Getenv("ID"))
 	expectedURL := "https://client.api.umbrella.com/v1/organizations/" + os.Getenv("ID")
 
@@ -17,6 +18,7 @@ func TestNewManagementURL(t *testing.T) {
 }
 
 func TestGet(t *testing.T) {
+	_ = godotenv.Load("/home/chance/dev/umbrella/dev.env")
 	testClient, _ := NewUmbrellaClient(os.Getenv("KEY"), os.Getenv("PWD"), os.Getenv("ID"))
 	response, err := testClient.get("destinationlists")
 	if err != nil {
@@ -39,16 +41,6 @@ func TestGet(t *testing.T) {
 // 		t.Errorf("Error: Response is nil")
 // 	}
 // }
-
-func TestUmbrellaClient_GetDestinations(t *testing.T) {
-	testClient, _ := NewUmbrellaClient(os.Getenv("KEY"), os.Getenv("PWD"), os.Getenv("ID"))
-	r, err := testClient.GetDestinations("54001")
-	if err != nil {
-		t.Error(err)
-	}
-
-	fmt.Println(r.Destination)
-}
 
 func TestFormURL(t *testing.T) {
 	const DefaultManagementURL = "https://client.api.umbrella.com/v1"
