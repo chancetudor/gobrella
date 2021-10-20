@@ -2,8 +2,8 @@ package client
 
 import (
 	"encoding/json"
-	destList "github.com/chancetudor/umbrella/destinationLists"
-	"github.com/chancetudor/umbrella/errs"
+	destList "github.com/chancetudor/gobrella/destinationLists"
+	"github.com/chancetudor/gobrella/errs"
 	"net/http"
 )
 

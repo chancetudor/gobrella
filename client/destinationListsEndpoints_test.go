@@ -2,7 +2,7 @@ package client
 
 import (
 	"fmt"
-	destList "github.com/chancetudor/umbrella/destinationLists"
+	destList "github.com/chancetudor/gobrella/destinationLists"
 	"github.com/joho/godotenv"
 	"os"
 	"testing"

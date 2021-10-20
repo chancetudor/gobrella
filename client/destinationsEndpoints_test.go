@@ -2,7 +2,7 @@ package client
 
 import (
 	"fmt"
-	"github.com/chancetudor/umbrella/destination"
+	"github.com/chancetudor/gobrella/destination"
 	"github.com/joho/godotenv"
 	"os"
 	"strconv"
