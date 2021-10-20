@@ -23,7 +23,7 @@ func (client *UmbrellaClient) GetDestinations(listID string) (*dest.Destination,
 		return nil, err
 	}
 	if resp.StatusCode != 200 {
-		err := errs.NewDestinationsError(resp.Status, resp.Body)
+		err := errs.NewDestinationsError(resp.Status, resp.Body, "GetDestinations")
 		return nil, err
 	}
 	d := new(dest.Destination)
@@ -53,7 +53,7 @@ func (client *UmbrellaClient) PostDestinations(listID string, dests []*dest.Post
 	}
 
 	if resp.StatusCode != 200 {
-		err := errs.NewDestinationsError(resp.Status, resp.Body)
+		err := errs.NewDestinationsError(resp.Status, resp.Body, "PostDestinations")
 		return nil, err
 	}
 
@@ -62,18 +62,23 @@ func (client *UmbrellaClient) PostDestinations(listID string, dests []*dest.Post
 
 // DeleteDestinations deletes a list of destinations from a destination list.
 // The function takes a string and a slice of type int and returns
-// a slice of type byte and an error, if there was one.
+// a pointer to an http.Response and an error, if there was one.
 // The slice parameter should contain a specific destination ID at each index.
-// TODO
-// func (client *UmbrellaClient) DeleteDestinations(listID string, destIDs []int) ([]byte, error) {
-// 	url, err := formURL(client.BaseURL.String(), "destinationlists", listID, "destinations", "remove")
-// 	if err != nil {
-// 		return nil, err
-// 	}
-// 	body, err := json.Marshal(destIDs)
-// 	resp, err := client.post(url.String(), body)
-// 	if err != nil {
-// 		return nil, err
-// 	}
-// 	return resp, nil
-// }
+func (client *UmbrellaClient) DeleteDestinations(listID string, destIDs []int) (*http.Response, error) {
+	url, err := formURL(client.BaseURL.String(), "destinationlists", listID, "destinations", "remove")
+	if err != nil {
+		return nil, err
+	}
+	body, err := json.Marshal(destIDs)
+	resp, err := client.delete(url.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	if resp.StatusCode != 200 {
+		err := errs.NewDestinationsError(resp.Status, resp.Body, "DeleteDestinations")
+		return nil, err
+	}
+
+	return resp, nil
+}
