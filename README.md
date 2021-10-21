@@ -1,4 +1,5 @@
 # gobrella
+[![Go Report Card](https://goreportcard.com/badge/github.com/chancetudor/gobrella)](https://goreportcard.com/report/github.com/chancetudor/gobrella)
 
 gobrella is a client library for the [APIs](https://docs.umbrella.com/developer) provided by Cisco Umbrella, formerly OpenDNS. It currently supports endpoints dealing with [Destination Lists](https://developer.cisco.com/docs/cloud-security/#!destination-lists-overview), but further functionality will be added in the future. Contributions are welcome.
 
