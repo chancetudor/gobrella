@@ -1,4 +1,4 @@
-package client
+package gobrella
 
 import (
 	"encoding/json"
