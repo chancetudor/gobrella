@@ -2,7 +2,7 @@ package gobrella
 
 import (
 	"encoding/json"
-	destList "github.com/chancetudor/gobrella/destinationLists"
+	destList "github.com/chancetudor/gobrella/models"
 	"github.com/chancetudor/gobrella/errs"
 )
 

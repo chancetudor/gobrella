@@ -2,8 +2,8 @@ package gobrella
 
 import (
 	"encoding/json"
-	dest "github.com/chancetudor/gobrella/destination"
 	"github.com/chancetudor/gobrella/errs"
+	dest "github.com/chancetudor/gobrella/models"
 )
 
 // destinationsEndpoints contains all functions to deal with specific destinations (domains, IP addresses, URLs, etc.)
