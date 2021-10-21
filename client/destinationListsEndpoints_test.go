@@ -28,7 +28,7 @@ func TestUmbrellaClient_GetDestinationList(t *testing.T) {
 		t.Error(err)
 	}
 	testClient, _ := NewUmbrellaClient(os.Getenv("KEY"), os.Getenv("P"), os.Getenv("ID"))
-	r, err := testClient.GetDestinationList("4092066")
+	r, err := testClient.GetDestinationList("12345")
 	if err != nil {
 		t.Error(err)
 		t.Fail()
@@ -51,7 +51,7 @@ func TestUmbrellaClient_PostDestinationList(t *testing.T) {
 	newList := &destList.DestinationListCreate{
 		Access:       "allow",
 		IsGlobal:     false,
-		Name:         "SOAR DEV TEST LIST 4",
+		Name:         "TEST LIST 4",
 		Destinations: nil,
 	}
 	r, err := testClient.PostDestinationList(newList)
@@ -69,7 +69,7 @@ func TestUmbrellaClient_PatchDestinationList(t *testing.T) {
 		t.Error(err)
 	}
 	testClient, _ := NewUmbrellaClient(os.Getenv("KEY"), os.Getenv("P"), os.Getenv("ID"))
-	r, err := testClient.PatchDestinationList("14346495", "SOAR DEV TEST LIST 4.1")
+	r, err := testClient.PatchDestinationList("12345", "TEST LIST 4.1")
 	if err != nil {
 		t.Error(err)
 		t.Fail()
@@ -84,7 +84,7 @@ func TestUmbrellaClient_DeleteDestinationList(t *testing.T) {
 		t.Error(err)
 	}
 	testClient, _ := NewUmbrellaClient(os.Getenv("KEY"), os.Getenv("P"), os.Getenv("ID"))
-	r, err := testClient.DeleteDestinationList("14346460")
+	r, err := testClient.DeleteDestinationList("12345")
 	if err != nil {
 		t.Error(err)
 		t.Fail()

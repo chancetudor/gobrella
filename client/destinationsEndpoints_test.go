@@ -15,7 +15,7 @@ func TestUmbrellaClient_GetDestinations(t *testing.T) {
 		t.Error(err)
 	}
 	testClient, _ := NewUmbrellaClient(os.Getenv("KEY"), os.Getenv("P"), os.Getenv("ID"))
-	r, err := testClient.GetDestinations("4092066")
+	r, err := testClient.GetDestinations("12345")
 	if err != nil {
 		t.Error(err)
 		t.Fail()
@@ -37,15 +37,15 @@ func TestUmbrellaClient_PostDestinations(t *testing.T) {
 	testClient, _ := NewUmbrellaClient(os.Getenv("KEY"), os.Getenv("P"), os.Getenv("ID"))
 	dests := []*destination.PostDestination{
 		destination.NewPostDestination("test"+strconv.Itoa(0)+".com",
-			"chtudor - this is test domain "+strconv.Itoa(0)),
+			"this is test domain "+strconv.Itoa(0)),
 	}
-	r, err := testClient.PostDestinations("4092066", dests)
+	r, err := testClient.PostDestinations("12345", dests)
 	if err != nil {
 		t.Error(err)
 		t.Fail()
 	}
 
-	if r.StatusCode != 200 {
+	if r != 200 {
 		t.Error(err)
 		t.Fail()
 	}
@@ -60,13 +60,13 @@ func TestUmbrellaClient_DeleteDestinations(t *testing.T) {
 	}
 	testClient, _ := NewUmbrellaClient(os.Getenv("KEY"), os.Getenv("P"), os.Getenv("ID"))
 	destIDs := []int{4059230}
-	r, err := testClient.DeleteDestinations("4092066", destIDs)
+	r, err := testClient.DeleteDestinations("12345", destIDs)
 	if err != nil {
 		t.Error(err)
 		t.Fail()
 	}
 
-	if r.StatusCode != 200 {
+	if r != 200 {
 		t.Error(err)
 		t.Fail()
 	}
