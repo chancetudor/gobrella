@@ -3,13 +3,13 @@ package client
 import (
 	"fmt"
 	destList "github.com/chancetudor/gobrella/destinationLists"
-	"github.com/joho/godotenv"
+	// "github.com/joho/godotenv"
 	"os"
 	"testing"
 )
 
 func TestUmbrellaClient_GetDestinationLists(t *testing.T) {
-	err := godotenv.Load("/home/chance/dev/gobrella/dev.env")
+	// err := godotenv.Load("/home/chance/dev/gobrella/dev.env")
 	if err != nil {
 		t.Error(err)
 	}
@@ -23,7 +23,7 @@ func TestUmbrellaClient_GetDestinationLists(t *testing.T) {
 }
 
 func TestUmbrellaClient_GetDestinationList(t *testing.T) {
-	err := godotenv.Load("/home/chance/dev/gobrella/dev.env")
+	// err := godotenv.Load("/home/chance/dev/gobrella/dev.env")
 	if err != nil {
 		t.Error(err)
 	}
@@ -43,7 +43,7 @@ func TestUmbrellaClient_GetDestinationList(t *testing.T) {
 }
 
 func TestUmbrellaClient_PostDestinationList(t *testing.T) {
-	err := godotenv.Load("/home/chance/dev/gobrella/dev.env")
+	// err := godotenv.Load("/home/chance/dev/gobrella/dev.env")
 	if err != nil {
 		t.Error(err)
 	}
@@ -64,7 +64,7 @@ func TestUmbrellaClient_PostDestinationList(t *testing.T) {
 }
 
 func TestUmbrellaClient_PatchDestinationList(t *testing.T) {
-	err := godotenv.Load("/home/chance/dev/gobrella/dev.env")
+	// err := godotenv.Load("/home/chance/dev/gobrella/dev.env")
 	if err != nil {
 		t.Error(err)
 	}
@@ -79,7 +79,7 @@ func TestUmbrellaClient_PatchDestinationList(t *testing.T) {
 }
 
 func TestUmbrellaClient_DeleteDestinationList(t *testing.T) {
-	err := godotenv.Load("/home/chance/dev/gobrella/dev.env")
+	// err := godotenv.Load("/home/chance/dev/gobrella/dev.env")
 	if err != nil {
 		t.Error(err)
 	}

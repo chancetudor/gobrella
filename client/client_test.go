@@ -1,17 +1,17 @@
 package client
 
 import (
-	"github.com/joho/godotenv"
+	// "github.com/joho/godotenv"
 	"os"
 	"strings"
 	"testing"
 )
 
 func TestNewManagementURL(t *testing.T) {
-	err := godotenv.Load("/home/chance/dev/gobrella/dev.env")
-	if err != nil {
-		t.Error(err)
-	}
+	// err := godotenv.Load("/home/chance/dev/gobrella/dev.env")
+	// if err != nil {
+	// 	t.Error(err)
+	// }
 	testClient, _ := NewUmbrellaClient(os.Getenv("KEY"), os.Getenv("P"), os.Getenv("ID"))
 	expectedURL := "https://client.api.umbrella.com/v1/organizations/" + os.Getenv("ID")
 
@@ -21,10 +21,10 @@ func TestNewManagementURL(t *testing.T) {
 }
 
 func TestGet(t *testing.T) {
-	err := godotenv.Load("/home/chance/dev/gobrella/dev.env")
-	if err != nil {
-		t.Error(err)
-	}
+	// err := godotenv.Load("/home/chance/dev/gobrella/dev.env")
+	// if err != nil {
+	// 	t.Error(err)
+	// }
 	testClient, _ := NewUmbrellaClient(os.Getenv("KEY"), os.Getenv("P"), os.Getenv("ID"))
 	response, err := testClient.get("destinationlists")
 	if err != nil {
@@ -36,18 +36,6 @@ func TestGet(t *testing.T) {
 	}
 }
 
-// func TestPost(t *testing.T) {
-// 	testClient, _ := NewUmbrellaClient(os.Getenv("KEY"), os.Getenv("PWD"), os.Getenv("ID"))
-// 	response, err := testClient.post("destinationlists", []byte("body: this is a test"))
-// 	if err != nil {
-// 		t.Error(err)
-// 	}
-//
-// 	if response == nil {
-// 		t.Errorf("Error: Response is nil")
-// 	}
-// }
-
 func TestFormURL(t *testing.T) {
 	const DefaultManagementURL = "https://client.api.umbrella.com/v1"
 	expectedURL := "https://client.api.umbrella.com/v1/test/path12345"
@@ -56,8 +44,4 @@ func TestFormURL(t *testing.T) {
 	if !strings.EqualFold(expectedURL, actualURL.String()) {
 		t.Errorf("URL was incorrect, got: %s and wanted: %s", actualURL, expectedURL)
 	}
-}
-
-func TestNewManagementWithClient(t *testing.T) {
-
 }
