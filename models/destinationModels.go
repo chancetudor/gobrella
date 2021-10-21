@@ -1,4 +1,4 @@
-package gobrella
+package models
 
 import (
 	"encoding/json"
