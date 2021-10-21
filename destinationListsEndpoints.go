@@ -2,8 +2,8 @@ package gobrella
 
 import (
 	"encoding/json"
-	destList "github.com/chancetudor/gobrella/models"
 	"github.com/chancetudor/gobrella/errs"
+	"github.com/chancetudor/gobrella/models"
 )
 
 // destinationListsEndpoints contains all functions to deal with destination lists (aka, block lists).
@@ -11,7 +11,7 @@ import (
 // GetDestinationLists retrieves all destination lists of an organization.
 // The function takes no parameters and returns a pointer to a DestinationListCollection
 // and an error, if there was one.
-func (client *UmbrellaClient) GetDestinationLists() (*destList.DestinationListCollection, error) {
+func (client *UmbrellaClient) GetDestinationLists() (*models.DestinationListCollection, error) {
 	url, err := formURL(client.BaseURL.String(), "destinationlists")
 	if err != nil {
 		return nil, err
@@ -24,7 +24,7 @@ func (client *UmbrellaClient) GetDestinationLists() (*destList.DestinationListCo
 		err := errs.NewDestinationListsError(resp.Status, resp.Body, "GetDestinationLists")
 		return nil, err
 	}
-	list := new(destList.DestinationListCollection)
+	list := new(models.DestinationListCollection)
 	if err = list.Unmarshal(resp); err != nil {
 		return nil, err
 	}
@@ -34,7 +34,7 @@ func (client *UmbrellaClient) GetDestinationLists() (*destList.DestinationListCo
 
 // GetDestinationList retrieves one destination list.
 // The function takes a string and returns a pointer to a DestinationList or an error, if there was one.
-func (client *UmbrellaClient) GetDestinationList(listID string) (*destList.DestinationList, error) {
+func (client *UmbrellaClient) GetDestinationList(listID string) (*models.DestinationList, error) {
 	url, err := formURL(client.BaseURL.String(), "destinationlists", listID)
 	if err != nil {
 		return nil, err
@@ -47,7 +47,7 @@ func (client *UmbrellaClient) GetDestinationList(listID string) (*destList.Desti
 		err := errs.NewDestinationListsError(resp.Status, resp.Body, "GetDestinationList")
 		return nil, err
 	}
-	list := new(destList.DestinationList)
+	list := new(models.DestinationList)
 	if err = list.Unmarshal(resp); err != nil {
 		return nil, err
 	}
@@ -58,7 +58,7 @@ func (client *UmbrellaClient) GetDestinationList(listID string) (*destList.Desti
 // PostDestinationList creates a destination list.
 // The function takes in a pointer to a DestinationListCreate
 // and returns a pointer to a DestinationListPosted and an error, if there was one.
-func (client *UmbrellaClient) PostDestinationList(list *destList.DestinationListCreate) (*destList.DestinationListPosted, error) {
+func (client *UmbrellaClient) PostDestinationList(list *models.DestinationListCreate) (*models.DestinationListPosted, error) {
 	url, err := formURL(client.BaseURL.String(), "destinationlists")
 	if err != nil {
 		return nil, err
@@ -76,7 +76,7 @@ func (client *UmbrellaClient) PostDestinationList(list *destList.DestinationList
 		return nil, err
 	}
 
-	newList := new(destList.DestinationListPosted)
+	newList := new(models.DestinationListPosted)
 	if err = newList.Unmarshal(resp); err != nil {
 		return nil, err
 	}
@@ -92,7 +92,7 @@ func (client *UmbrellaClient) PatchDestinationList(listID string, newName string
 	if err != nil {
 		return -1, err
 	}
-	patch := &destList.DestinationListPatch{Name: newName}
+	patch := &models.DestinationListPatch{Name: newName}
 	body, err := json.Marshal(patch)
 	if err != nil {
 		return -1, err
