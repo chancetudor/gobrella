@@ -13,13 +13,13 @@ import "github.com/chancetudor/gobrella"
 Create a client for the Management and Provisioning API. Requires an API key and password, as well as an organization ID. Please follow the Cisco docs for finding this information.
 
 ```go
-client := umbrella.NewUmbrellaClient(key, pwd, organizationID)
+client := gobrella.NewUmbrellaClient(key, pwd, organizationID)
 ```
 
 The NewUmbrellaClient's HTTP client is Go's default client, but a custom HTTP client can be passed in like so:
 
 ```go
-client := umbrella.NewUmbrellaClient(key, pwd, organizationID, 
+client := gobrella.NewUmbrellaClient(key, pwd, organizationID, 
 	WithClient(PointerToCustomHTTPClient))
 ```
 
