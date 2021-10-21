@@ -16,3 +16,4 @@
 
 dev.env
 destLists.json
+*_test.go
