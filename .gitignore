@@ -16,4 +16,5 @@
 
 dev.env
 destLists.json
-*_test.go
+destinationListsEndpoints_test.go
+destinationsEndpoints_test.go
