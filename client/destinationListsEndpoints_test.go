@@ -10,9 +10,9 @@ import (
 
 func TestUmbrellaClient_GetDestinationLists(t *testing.T) {
 	// err := godotenv.Load("/home/chance/dev/gobrella/dev.env")
-	if err != nil {
-		t.Error(err)
-	}
+	// if err != nil {
+	// 	t.Error(err)
+	// }
 	testClient, _ := NewUmbrellaClient(os.Getenv("KEY"), os.Getenv("P"), os.Getenv("ID"))
 	r, err := testClient.GetDestinationLists()
 	if err != nil {
@@ -24,9 +24,9 @@ func TestUmbrellaClient_GetDestinationLists(t *testing.T) {
 
 func TestUmbrellaClient_GetDestinationList(t *testing.T) {
 	// err := godotenv.Load("/home/chance/dev/gobrella/dev.env")
-	if err != nil {
-		t.Error(err)
-	}
+	// if err != nil {
+	// 	t.Error(err)
+	// }
 	testClient, _ := NewUmbrellaClient(os.Getenv("KEY"), os.Getenv("P"), os.Getenv("ID"))
 	r, err := testClient.GetDestinationList("12345")
 	if err != nil {
@@ -44,9 +44,9 @@ func TestUmbrellaClient_GetDestinationList(t *testing.T) {
 
 func TestUmbrellaClient_PostDestinationList(t *testing.T) {
 	// err := godotenv.Load("/home/chance/dev/gobrella/dev.env")
-	if err != nil {
-		t.Error(err)
-	}
+	// if err != nil {
+	// 	t.Error(err)
+	// }
 	testClient, _ := NewUmbrellaClient(os.Getenv("KEY"), os.Getenv("P"), os.Getenv("ID"))
 	newList := &destList.DestinationListCreate{
 		Access:       "allow",
@@ -65,9 +65,9 @@ func TestUmbrellaClient_PostDestinationList(t *testing.T) {
 
 func TestUmbrellaClient_PatchDestinationList(t *testing.T) {
 	// err := godotenv.Load("/home/chance/dev/gobrella/dev.env")
-	if err != nil {
-		t.Error(err)
-	}
+	// if err != nil {
+	// 	t.Error(err)
+	// }
 	testClient, _ := NewUmbrellaClient(os.Getenv("KEY"), os.Getenv("P"), os.Getenv("ID"))
 	r, err := testClient.PatchDestinationList("12345", "TEST LIST 4.1")
 	if err != nil {
@@ -80,9 +80,9 @@ func TestUmbrellaClient_PatchDestinationList(t *testing.T) {
 
 func TestUmbrellaClient_DeleteDestinationList(t *testing.T) {
 	// err := godotenv.Load("/home/chance/dev/gobrella/dev.env")
-	if err != nil {
-		t.Error(err)
-	}
+	// if err != nil {
+	// 	t.Error(err)
+	// }
 	testClient, _ := NewUmbrellaClient(os.Getenv("KEY"), os.Getenv("P"), os.Getenv("ID"))
 	r, err := testClient.DeleteDestinationList("12345")
 	if err != nil {
