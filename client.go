@@ -7,6 +7,7 @@ import (
 	"path"
 )
 
+// UmbrellaClient is a struct holding vital information for connecting to the API
 type UmbrellaClient struct {
 	APIKey         string
 	APIPwd         string
@@ -15,8 +16,11 @@ type UmbrellaClient struct {
 	HttpClient     *http.Client
 }
 
+// DefaultManagementURL is a constant to be used for building out specific REST resource endpoints.
 const DefaultManagementURL = "https://management.api.umbrella.com/v1"
 
+// HttpClientOption is a variadic function, to be used when passing a custom HTTP client to the
+// NewUmbrellaClient constructor.
 type HttpClientOption func(m *UmbrellaClient)
 
 // WithClient is an optional functional parameter to be used with NewUmbrellaClient.

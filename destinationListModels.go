@@ -1,4 +1,4 @@
-package destinationLists
+package gobrella
 
 import (
 	"encoding/json"
@@ -103,6 +103,9 @@ type DestinationListPatch struct {
 	Name string `json:"name"`
 }
 
+// NewDestinationListCreate returns a pointer to a DestinationListCreate.
+// DestinationListCreate is a struct used for creating new destination lists within an organization.
+// PostDestinationList() expects this type to be passed to it.
 func NewDestinationListCreate(access string, isGlobal bool, name string, destinations []struct {
 	Destination string `json:"destination,omitempty"`
 	Type        string `json:"type,omitempty"`

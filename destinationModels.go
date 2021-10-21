@@ -1,4 +1,4 @@
-package destination
+package gobrella
 
 import (
 	"encoding/json"
@@ -35,6 +35,9 @@ type PostDestination struct {
 	Comment     string `json:"comment,omitempty"`
 }
 
+// NewPostDestination takes a destination and a comment for that destination
+// and returns a pointer to a PostDestination.
+// A PostDestination is required for POSTing new destinations.
 func NewPostDestination(destination string, comment string) *PostDestination {
 	return &PostDestination{Destination: destination, Comment: comment}
 }
