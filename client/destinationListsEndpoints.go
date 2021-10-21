@@ -87,43 +87,43 @@ func (client *UmbrellaClient) PostDestinationList(list *destList.DestinationList
 // PatchDestinationList renames a destination list.
 // The function takes in two strings
 // and returns an HTTP response status and an error, if there was one.
-func (client *UmbrellaClient) PatchDestinationList(listID string, newName string) (string, error) {
+func (client *UmbrellaClient) PatchDestinationList(listID string, newName string) (int, error) {
 	url, err := formURL(client.BaseURL.String(), "destinationlists", listID)
 	if err != nil {
-		return "", err
+		return -1, err
 	}
 	patch := &destList.DestinationListPatch{Name: newName}
 	body, err := json.Marshal(patch)
 	if err != nil {
-		return "", err
+		return -1, err
 	}
 	resp, err := client.patch(url.String(), body)
 	if err != nil {
-		return "", err
+		return -1, err
 	}
 	if resp.StatusCode != 200 {
 		err := errs.NewDestinationListsError(resp.Status, resp.Body, "DeleteDestinationList")
-		return resp.Status, err
+		return resp.StatusCode, err
 	}
 
-	return resp.Status, nil
+	return resp.StatusCode, nil
 }
 
 // DeleteDestinationList deletes a destination list.
 // The function takes in a string and returns an HTTP response status and an error, if there was one.
-func (client *UmbrellaClient) DeleteDestinationList(listID string) (string, error) {
+func (client *UmbrellaClient) DeleteDestinationList(listID string) (int, error) {
 	url, err := formURL(client.BaseURL.String(), "destinationlists", listID)
 	if err != nil {
-		return "", err
+		return -1, err
 	}
 	resp, err := client.delete(url.String(), nil)
 	if err != nil {
-		return "", err
+		return -1, err
 	}
 	if resp.StatusCode != 200 {
 		err := errs.NewDestinationListsError(resp.Status, resp.Body, "DeleteDestinationList")
-		return resp.Status, err
+		return resp.StatusCode, err
 	}
 
-	return resp.Status, nil
+	return resp.StatusCode, nil
 }
