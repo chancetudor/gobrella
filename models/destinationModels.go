@@ -9,6 +9,7 @@ import (
 // Destination represents what is held in DestinationLists and is returned from GetDestinations().
 // When performing a GET request, all fields in the Destination struct are filled, but what is of interest
 // is within the Data field.
+// There shouldn't be any reason for a caller to create a var of this type; this is for unmarshaling return content.
 type Destination struct {
 	Status struct {
 		Code int    `json:"code,omitempty"`

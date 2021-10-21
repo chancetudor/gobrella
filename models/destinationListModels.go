@@ -8,6 +8,7 @@ import (
 
 // DestinationList is a struct to represent a single destination list.
 // GetDestinationList returns this type.
+// There shouldn't be any reason for a caller to create a var of this type; this is for unmarshaling return content.
 type DestinationList struct {
 	Status struct {
 		Code int    `json:"code"`
@@ -33,6 +34,7 @@ type DestinationList struct {
 
 // DestinationListCollection is a struct used to marshal all destination lists in an organization.
 // GetDestinationLists() returns this type.
+// There shouldn't be any reason for a caller to create a var of this type; this is for unmarshaling return content.
 // The Data field contains each destination list in the organization.
 type DestinationListCollection struct {
 	Status struct {
@@ -101,6 +103,12 @@ type DestinationListPosted struct {
 // PatchDestinationList() uses this type.
 type DestinationListPatch struct {
 	Name string `json:"name"`
+}
+
+// NewDestinationListPatch returns a pointer to a DestinationListPatch.
+// A caller shouldn't have any reason to create this type; this is used in an internal, unexported function.
+func NewDestinationListPatch(name string) *DestinationListPatch {
+	return &DestinationListPatch{Name: name}
 }
 
 // NewDestinationListCreate returns a pointer to a DestinationListCreate.
