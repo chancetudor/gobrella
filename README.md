@@ -23,16 +23,13 @@ client := gobrella.NewUmbrellaClient(key, pwd, organizationID,
 	WithClient(PointerToCustomHTTPClient))
 ```
 
+### Destination List Endpoints
+
 Retrieve all destination lists of organization:
 
 ```go
 lists, err := client.GetDestinationLists()
-if err != nil {
-  return err
-}
-for index, value := range lists.Data {
-  // do something
-}
+// do something with lists.Data
 ```
 
 Retrieve a single destination list of an organization:
@@ -45,7 +42,7 @@ list, err := client.GetDestinationList("12345")
 Create a new destination list for an organization:
 
 ```go
-list, err := client.PostDestinationList(newList)
+newlyCreatedList, err := client.PostDestinationList(newList)
 // do something with list.Data
 ```
 
@@ -60,5 +57,28 @@ Delete a destination list:
 
 ```go
 statusCode, err := client.DeleteDestinationList(listID)
+// check statusCode
+```
+
+### Destination Endpoints
+
+Get a list of destinations related to a destination list:
+
+```go
+dests, err := client.GetDestinations(listID)
+// do something with dests
+```
+
+Add a list of destinations to a destination list:
+
+```go
+statusCode, err := client.PostDestinations(listID, sliceOfDests)
+// check statusCode
+```
+
+Delete a list of destinations from a destination list:
+
+```go
+statusCode, err := client.DeleteDestinations(listID, sliceOfDestIDs)
 // check statusCode
 ```

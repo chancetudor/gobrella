@@ -4,7 +4,6 @@ import (
 	"encoding/json"
 	dest "github.com/chancetudor/gobrella/destination"
 	"github.com/chancetudor/gobrella/errs"
-	"net/http"
 )
 
 // destinationsEndpoints contains all functions to deal with specific destinations (domains, IP addresses, URLs, etc.)
@@ -37,48 +36,48 @@ func (client *UmbrellaClient) GetDestinations(listID string) (*dest.Destination,
 
 // PostDestinations adds a list of destinations to a destination list.
 // The function takes a string and a slice of type Destination and
-// returns a pointer to an http.Response and an error, if there was one.
-func (client *UmbrellaClient) PostDestinations(listID string, dests []*dest.PostDestination) (*http.Response, error) {
+// returns an HTTP status code and an error, if there was one.
+func (client *UmbrellaClient) PostDestinations(listID string, dests []*dest.PostDestination) (int, error) {
 	url, err := formURL(client.BaseURL.String(), "destinationlists", listID, "destinations")
 	if err != nil {
-		return nil, err
+		return -1, err
 	}
 	body, err := json.Marshal(dests)
 	if err != nil {
-		return nil, err
+		return -1, err
 	}
 	resp, err := client.post(url.String(), body)
 	if err != nil {
-		return nil, err
+		return -1, err
 	}
 
 	if resp.StatusCode != 200 {
 		err := errs.NewDestinationsError(resp.Status, resp.Body, "PostDestinations")
-		return nil, err
+		return resp.StatusCode, err
 	}
 
-	return resp, nil
+	return resp.StatusCode, nil
 }
 
 // DeleteDestinations deletes a list of destinations from a destination list.
 // The function takes a string and a slice of type int and returns
-// a pointer to an http.Response and an error, if there was one.
+// an HTTP status code and an error, if there was one.
 // The slice parameter should contain a specific destination ID at each index.
-func (client *UmbrellaClient) DeleteDestinations(listID string, destIDs []int) (*http.Response, error) {
+func (client *UmbrellaClient) DeleteDestinations(listID string, destIDs []int) (int, error) {
 	url, err := formURL(client.BaseURL.String(), "destinationlists", listID, "destinations", "remove")
 	if err != nil {
-		return nil, err
+		return -1, err
 	}
 	body, err := json.Marshal(destIDs)
 	resp, err := client.delete(url.String(), body)
 	if err != nil {
-		return nil, err
+		return -1, err
 	}
 
 	if resp.StatusCode != 200 {
 		err := errs.NewDestinationsError(resp.Status, resp.Body, "DeleteDestinations")
-		return nil, err
+		return resp.StatusCode, err
 	}
 
-	return resp, nil
+	return resp.StatusCode, nil
 }
